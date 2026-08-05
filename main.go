@@ -18,7 +18,6 @@ import (
 )
 
 const (
-	// Исправлен алфавит: добавлена 'l'
 	LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
 	UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	DIGITS    = "0123456789"
@@ -84,7 +83,7 @@ func main() {
 
 	encStr := ""
 	rootCmd.Flags().StringVar(&encStr, "encoding", "", "Output encoding: hex, base32, base64, base62")
-	rootCmd.MarkFlagsMutuallyExclusive("encoding") // cobra сам проверит единственный выбор
+	rootCmd.MarkFlagsMutuallyExclusive("encoding")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
@@ -220,7 +219,7 @@ func buildAlphabet(cfg *Config) string {
 // generatePassword возвращает []byte длины length из алфавита alphabetBytes
 func generatePassword(alphabet []byte, alphabetSize *big.Int, length int) []byte {
 	result := make([]byte, length)
-	for i := 0; i < length; i++ {
+	for i := range length {
 		idx, _ := rand.Int(rand.Reader, alphabetSize)
 		result[i] = alphabet[idx.Int64()]
 	}
